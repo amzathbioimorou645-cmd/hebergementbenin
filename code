@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ImmoBénin — Trouvez votre logement idéal</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #D85A30;
+      --orange-hover: #C04e28;
+      --orange-light: #FAECE7;
+      --orange-dark: #4A1B0C;
+      --teal: #1D9E75;
+      --teal-light: #E1F5EE;
+      --teal-dark: #085041;
+      --gray-bg: #F7F5F0;
+      --gray-card: #FFFFFF;
+      --gray-border: #E8E5DE;
+      --gray-mid: #888780;
+      --gray-text: #2C2C2A;
+      --gray-sub: #5F5E5A;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--gray-bg);
+      color: var(--gray-text);
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      background: var(--orange);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(216,90,48,0.3);
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: #FAC775; }
+    .header-links { display: flex; gap: 1.5rem; align-items: center; }
+    .header-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.15s; }
+    .header-links a:hover { color: #fff; }
+    .btn-deposer {
+      background: #fff;
+      color: var(--orange);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-deposer:hover { opacity: 0.9; }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: linear-gradient(135deg, #D85A30 0%, #993C1D 100%);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 5vw, 42px);
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .hero-sub { color: rgba(255,255,255,0.85); font-size: 16px; margin-bottom: 2rem; }
+
+    .search-box {
+      max-width: 620px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 8px 8px 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-md);
+    }
+    .search-box svg { flex-shrink: 0; opacity: 0.4; }
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--gray-text);
+      background: transparent;
+    }
+    .search-box input::placeholder { color: var(--gray-mid); }
+    .btn-search {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .btn-search:hover { background: var(--orange-hover); }
+
+    /* ─── STATS ─── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 1.5rem 2rem;
+      background: #fff;
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 24px; font-weight: 600; color: var(--orange); font-family: 'DM Serif Display', serif; }
+    .stat-label { font-size: 12px; color: var(--gray-sub); margin-top: 2px; }
+
+    /* ─── MAIN ─── */
+    .main-container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* ─── FILTERS ─── */
+    .section-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-pill {
+      border: 1.5px solid var(--gray-border);
+      border-radius: 24px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: #fff;
+      color: var(--gray-sub);
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s;
+    }
+    .filter-pill.active {
+      background: var(--orange-light);
+      border-color: var(--orange);
+      color: var(--orange-dark);
+    }
+    .filter-pill:hover:not(.active) { background: var(--gray-bg); border-color: #ccc; }
+    .results-count { font-size: 14px; color: var(--gray-sub); white-space: nowrap; }
+    .results-count strong { color: var(--gray-text); }
+
+    /* ─── GRID ─── */
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* ─── CARD ─── */
+    .listing-card {
+      background: var(--gray-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-border);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .listing-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .listing-card.featured { border-color: var(--orange); box-shadow: 0 0 0 2px var(--orange); }
+
+    .card-photo-wrap { position: relative; }
+    .card-photo {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+      background: var(--gray-bg);
+    }
+    .card-photo-placeholder {
+      width: 100%;
+      height: 190px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      background: var(--gray-bg);
+    }
+    .badge-top-left {
+      position: absolute; top: 10px; left: 10px;
+      background: var(--orange); color: #fff;
+      font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 6px;
+    }
+    .badge-top-right {
+      position: absolute; top: 10px; right: 10px;
+      font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 6px;
+    }
+    .badge-top-right.dispo { background: var(--teal); color: #fff; }
+    .badge-top-right.vente { background: #185FA5; color: #fff; }
+    .fav-btn {
+      position: absolute; bottom: 10px; right: 10px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--gray-border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 16px; transition: all 0.15s;
+      box-shadow: var(--shadow-sm);
+    }
+    .fav-btn.liked { background: #FCEBEB; border-color: #E24B4A; color: #E24B4A; }
+
+    .card-body { padding: 14px 16px 16px; }
+    .card-title { font-size: 15px; font-weight: 600; color: var(--gray-text); margin-bottom: 4px; line-height: 1.3; }
+    .card-loc { font-size: 13px; color: var(--gray-sub); margin-bottom: 12px; display: flex; align-items: center; gap: 4px; }
+    .card-price { font-size: 20px; font-weight: 700; color: var(--orange); font-family: 'DM Serif Display', serif; }
+    .card-price span { font-size: 12px; color: var(--gray-mid); font-weight: 400; font-family: 'DM Sans', sans-serif; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+    .card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+    .tag {
+      background: var(--gray-bg);
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 11px;
+      color: var(--gray-sub);
+      font-weight: 500;
+    }
+    .btn-contact {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+    .btn-contact:hover { opacity: 0.88; }
+
+    /* ─── EMPTY ─── */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--gray-mid);
+      font-size: 15px;
+    }
+    .empty-state p { margin-top: 0.5rem; font-size: 13px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--orange-dark);
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: 13px;
+      margin-top: 3rem;
+    }
+    footer strong { color: #FAC775; font-family: 'DM Serif Display', serif; font-size: 15px; }
+
+    /* ─── MODAL CONTACT ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: var(--shadow-md);
+    }
+    .modal h3 { font-size: 18px; font-weight: 600; margin-bottom: 0.5rem; }
+    .modal p { font-size: 13px; color: var(--gray-sub); margin-bottom: 1.25rem; }
+    .modal input, .modal textarea {
+      width: 100%; border: 1px solid var(--gray-border);
+      border-radius: var(--radius-sm); padding: 10px 12px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      color: var(--gray-text); margin-bottom: 10px; outline: none;
+      transition: border-color 0.15s;
+    }
+    .modal input:focus, .modal textarea:focus { border-color: var(--orange); }
+    .modal textarea { height: 80px; resize: vertical; }
+    .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+    .btn-cancel { background: none; border: 1px solid var(--gray-border); border-radius: var(--radius-sm); padding: 8px 16px; font-size: 13px; cursor: pointer; color: var(--gray-sub); font-family: 'DM Sans', sans-serif; }
+    .btn-send { background: var(--orange); color: #fff; border: none; border-radius: var(--radius-sm); padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+    .btn-send:hover { background: var(--orange-hover); }
+
+    @media (max-width: 600px) {
+      .stats-bar { gap: 1.5rem; }
+      .header-links a:not(:last-child) { display: none; }
+      .listings-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">Immo<span>Bénin</span></div>
+  <nav class="header-links">
+    <a href="#">Accueil</a>
+    <a href="#">Annonces</a>
+    <a href="#">À propos</a>
+    <button class="btn-deposer" onclick="alert('Formulaire de dépôt bientôt disponible !')">+ Déposer une annonce</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h1 class="hero-title">Trouvez votre logement idéal<br>au Bénin</h1>
+  <p class="hero-sub">Appartements, maisons, studios — tous les prix en francs CFA</p>
+  <div class="search-box">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="#888" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="#888" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input type="text" id="searchInput" placeholder="Rechercher par quartier, ville…" />
+    <button class="btn-search" onclick="doSearch()">Rechercher</button>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num" id="totalCount">5</div><div class="stat-label">Annonces actives</div></div>
+  <div class="stat-item"><div class="stat-num">47</div><div class="stat-label">Villes couvertes</div></div>
+  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-label">Propriétaires vérifiés</div></div>
+  <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Note moyenne</div></div>
+</div>
+
+<!-- MAIN -->
+<main class="main-container">
+  <div class="section-top">
+    <div class="filters" id="filters">
+      <button class="filter-pill active" onclick="setType('Tous', this)">Tous</button>
+      <button class="filter-pill" onclick="setType('Appartement', this)">Appartements</button>
+      <button class="filter-pill" onclick="setType('Maison', this)">Maisons</button>
+      <button class="filter-pill" onclick="setType('Studio', this)">Studios</button>
+      <button class="filter-pill" onclick="setType('Bureau', this)">Bureaux</button>
+    </div>
+    <div class="results-count" id="resultsCount"><strong>5</strong> résultats</div>
+  </div>
+
+  <div class="listings-grid" id="listingsGrid"></div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>ImmoBénin</strong><br>
+  La plateforme de confiance pour trouver un logement au Bénin · Tous droits réservés 2025
+</footer>
+
+<!-- MODAL CONTACT -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <h3>Contacter le propriétaire</h3>
+    <p id="modalSubtitle">Envoyez un message pour ce logement</p>
+    <input type="text" placeholder="Votre nom complet" />
+    <input type="tel" placeholder="Votre numéro de téléphone" />
+    <textarea placeholder="Votre message…">Bonjour, je suis intéressé(e) par ce logement. Pouvez-vous me contacter ?</textarea>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="document.getElementById('modalOverlay').classList.remove('open')">Annuler</button>
+      <button class="btn-send" onclick="alert('Message envoyé ! Le propriétaire vous contactera bientôt.');document.getElementById('modalOverlay').classList.remove('open')">Envoyer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const listings = [
+    {
+      id: 1,
+      title: "Appartement 3 pièces meublé",
+      loc: "Fidjrossè, Cotonou",
+      price: "180 000",
+      period: "/mois",
+      type: "Appartement",
+      photo: "https://a0.muscache.com/im/pictures/miso/Hosting-52233686/original/dfbd0d6c-0bb9-4e3f-8ec9-5e9e11a95540.jpeg",
+      fallback: "🏢",
+      tags: ["3 chambres", "Meublé", "Gardiennage"],
+      badge: "Coup de cœur",
+      featured: true,
+      status: "Disponible"
+    },
+    {
+      id: 2,
+      title: "Villa avec jardin — 5 chambres",
+      loc: "Abomey-Calavi",
+      price: "450 000",
+      period: "/mois",
+      type: "Maison",
+      photo: "https://a0.muscache.com/im/pictures/prohost-api/Hosting-868083742289528745/original/3bd09ddc-e64c-4143-88fc-e12f1ba7cf09.jpeg",
+      fallback: "🏡",
+      tags: ["5 chambres", "Parking", "Clôture"],
+      badge: null,
+      featured: false,
+      status: "Disponible"
+    },
+    {
+      id: 3,
+      title: "Studio meublé centre-ville",
+      loc: "Ganhi, Cotonou",
+      price: "65 000",
+      period: "/mois",
+      type: "Studio",
+      photo: "https://a0.muscache.com/im/pictures/miso/Hosting-795389677068786978/original/9e38e84c-7af4-47c8-891a-80e93e696fc8.jpeg",
+      fallback: "🏠",
+      tags: ["1 chambre", "Wifi", "Eau chaude"],
+      badge: "Nouveau",
+      featured: false,
+      status: "Disponible"
+    },
+    {
+      id: 4,
+      title: "Maison F4 à vendre",
+      loc: "Abomey-Calavi",
+      price: "22 500 000",
+      period: "(vente)",
+      type: "Maison",
+      photo: "https://a0.muscache.com/im/pictures/prohost-api/Hosting-706773386703789143/original/e03d6501-7bdd-4b7e-9e14-b53b0a979b3a.jpeg",
+      fallback: "🏘",
+      tags: ["4 chambres", "Clôture", "Forage"],
+      badge: null,
+      featured: false,
+      status: "En vente"
+    },
+    {
+      id: 5,
+      title: "Bureau équipé 80 m²",
+      loc: "Haie Vive, Cotonou",
+      price: "300 000",
+      period: "/mois",
+      type: "Bureau",
+      photo: "https://a0.muscache.com/im/pictures/miso/Hosting-672748978225742090/original/58fd80e7-a7a1-4c3e-bca9-7ef9c1f8c32a.jpeg",
+      fallback: "🏬",
+      tags: ["Climatisé", "Fibre optique", "Sécurité"],
+      badge: null,
+      featured: false,
+      status: "Disponible"
+    }
+  ];
+
+  let liked = {};
+  let currentType = "Tous";
+  let currentSearch = "";
+
+  function render() {
+    const filtered = listings.filter(l => {
+      const matchType = currentType === "Tous" || l.type === currentType;
+      const q = currentSearch.toLowerCase();
+      const matchSearch = !q || l.title.toLowerCase().includes(q) || l.loc.toLowerCase().includes(q);
+      return matchType && matchSearch;
+    });
+
+    document.getElementById("totalCount").textContent = filtered.length;
+    document.getElementById("resultsCount").innerHTML = `<strong>${filtered.length}</strong> résultat${filtered.length > 1 ? 's' : ''}`;
+
+    const grid = document.getElementById("listingsGrid");
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty-state">🔍 Aucune annonce trouvée<p>Essayez un autre quartier ou type de bien.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(l => `
+      <div class="listing-card${l.featured ? ' featured' : ''}">
+        <div class="card-photo-wrap">
+          ${l.badge ? `<div class="badge-top-left">${l.badge}</div>` : ''}
+          <div class="badge-top-right ${l.status === 'En vente' ? 'vente' : 'dispo'}">${l.status}</div>
+          <img
+            src="${l.photo}"
+            alt="${l.title}"
+            class="card-photo"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          />
+          <div class="card-photo-placeholder">${l.fallback}</div>
+          <button class="fav-btn${liked[l.id] ? ' liked' : ''}" onclick="toggleLike(${l.id}, event)">${liked[l.id] ? '♥' : '♡'}</button>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${l.title}</div>
+          <div class="card-loc">📍 ${l.loc}</div>
+          <div class="card-price">${l.price} FCFA <span>${l.period}</span></div>
+          <div class="card-bottom">
+            <div class="card-tags">${l.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+            <button class="btn-contact" onclick="openModal('${l.title}', '${l.loc}')">Contacter</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toggleLike(id, e) {
+    e.stopPropagation();
+    liked[id] = !liked[id];
+    render();
+  }
+
+  function setType(type, btn) {
+    currentType = type;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  }
+
+  function doSearch() {
+    currentSearch = document.getElementById("searchInput").value;
+    render();
+  }
+
+  document.getElementById("searchInput").addEventListener("keyup", e => {
+    if (e.key === "Enter") doSearch();
+  });
+
+  function openModal(title, loc) {
+    document.getElementById("modalSubtitle").textContent = `${title} — ${loc}`;
+    document.getElementById("modalOverlay").classList.add("open");
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById("modalOverlay")) {
+      document.getElementById("modalOverlay").classList.remove("open");
+    }
+  }
+
+  render();
+</script>
+</body>
+</html>
